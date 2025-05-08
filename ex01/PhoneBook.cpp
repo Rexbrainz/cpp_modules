@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:09:19 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/08 17:13:28 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:17:18 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	display_header(void)
 
 void PhoneBook::search(void)
 {
-	size_t		d_index;
+	int			d_index;
 	std::string	s_index;
 	std::string	separator;
 
@@ -60,19 +60,28 @@ void PhoneBook::search(void)
 	while (true)
 	{
 		std::cout << "Enter index to display: ";
-		std::cin >> d_index;
-		if (std::cin.fail())
+		std::getline(std::cin, s_index);
+		try
 		{
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			std::cout << "Invalid input" << std::endl;
-				continue ;
+			d_index = std::stoi(s_index);
 		}
-		std::getline(std::cin, s_index); //To clear the newline character.
-		if (d_index < contacts_saved)
-			break ;
-		std::cout << "Index entered is either wrong" << std::endl;
-		std::cout << " or out of range" << std::endl;
+		catch (std::invalid_argument &e)
+		{
+			std::cerr << "Invalid argument" << std::endl;
+			continue ;
+		}
+		catch (std::out_of_range &e)
+		{
+			std::cerr << "Out of range input" << std::endl;
+			continue ;
+		}
+		if (d_index < 0 || (size_t)d_index >= contacts_saved)
+		{
+			std::cout << "Index entered is either wrong" << std::endl;
+			std::cout << " or out of range" << std::endl;
+		}
+		else
+			break;
 	}
 	contacts[d_index].display();
 }

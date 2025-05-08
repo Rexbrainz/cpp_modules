@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:06:02 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/08 10:27:00 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:12:19 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 constexpr int SIZE = 8;
 
