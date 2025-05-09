@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:09:19 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/08 18:17:18 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:14:50 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,29 @@ void PhoneBook::search(void)
 	{
 		std::cout << "Enter index to display: ";
 		std::getline(std::cin, s_index);
+		if (std::cin.eof())
+		{
+			std::cout << "\033[31m\nEOF detected, exiting.\033[0m" << std::endl;
+			exit(1);
+		}
 		try
 		{
 			d_index = std::stoi(s_index);
 		}
 		catch (std::invalid_argument &e)
 		{
-			std::cerr << "Invalid argument" << std::endl;
+			std::cerr << "\033[31mInvalid argument\033[0m" << std::endl;
 			continue ;
 		}
 		catch (std::out_of_range &e)
 		{
-			std::cerr << "Out of range input" << std::endl;
+			std::cerr << "\033[31mOut of range input\033[0m" << std::endl;
 			continue ;
 		}
 		if (d_index < 0 || (size_t)d_index >= contacts_saved)
 		{
-			std::cout << "Index entered is either wrong" << std::endl;
-			std::cout << " or out of range" << std::endl;
+			std::cout << "\033[31mIndex entered is either wrong\033[0m" << std::endl;
+			std::cout << "\033[31m or out of range\033[0m" << std::endl;
 		}
 		else
 			break;

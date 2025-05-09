@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:13:46 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/08 16:06:04 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:18:01 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,26 @@ void	Contact::get_contact_fields(void)
 		{
 			std::cout << "Enter " << prompt_fields[i] << ": ";
 			std::getline(std::cin, input);
+			if (std::cin.eof())
+			{
+				std::cout << "\n\033[31mEof detected\033[0m" << std::endl;
+				exit(1);
+			}
 			if (!input.empty())
 			{
 				if (prompt_fields[i] == "Phone number")
 				{
 					if (!is_phone_number_valid(input))
 					{
-						std::cout << "Error: invalid phone number" << std::endl;
-						std::cout << "Enter a valid phone number" << std::endl;
+						std::cout << "\033[31mError: invalid phone number\033[0m" << std::endl;
+						std::cout << "\033[32mEnter a valid phone number\033[0m" << std::endl;
 						continue ;
 					}
 				}
 				contact_fields[i] = input;
 				break ;
 			}
-			std::cout << "Contact fields cannot be empty" << std::endl;
+			std::cout << "\033[31mContact fields cannot be empty\033[0m" << std::endl;
 		}
 	}
 }
