@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:13:46 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/09 08:18:01 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:29:11 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	Contact::get_contact_fields(void)
 			std::getline(std::cin, input);
 			if (std::cin.eof())
 			{
-				std::cout << "\n\033[31mEof detected\033[0m" << std::endl;
+				std::cout << "\n\033[31mEof detected. exiting..\033[0m" << std::endl;
 				exit(1);
 			}
 			if (!input.empty())

@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:09:19 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/09 08:14:50 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/09 08:29:39 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void PhoneBook::search(void)
 	separator =  "+----------+----------+----------+----------+";
 	if (!contacts_saved)
 	{
-		std::cout << "PhoneBook is empty" << std::endl;
+		std::cout << "\033[31mPhoneBook is empty.\033[0m" << std::endl;
 		return ;
 	}
 	display_header();
@@ -63,7 +63,7 @@ void PhoneBook::search(void)
 		std::getline(std::cin, s_index);
 		if (std::cin.eof())
 		{
-			std::cout << "\033[31m\nEOF detected, exiting.\033[0m" << std::endl;
+			std::cout << "\033[31m\nEOF detected, exiting...\033[0m" << std::endl;
 			exit(1);
 		}
 		try
