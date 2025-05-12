@@ -1,8 +1,8 @@
-# **************************************************************************** #
-#									MOAR BRAINZ!                               #
+#**************************************************************************** #
+#								SED IS FOR LOSERS                             #
 # **************************************************************************** #
 
-NAME        = zombieHorde
+NAME        = sed
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++17
 
@@ -10,7 +10,7 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = include
 
-SRCS        = main.cpp Zombie.cpp zombieHorde.cpp
+SRCS        = main.cpp 
 OBJ        = $(SRCS:.cpp=.o)
 
 # Colors
