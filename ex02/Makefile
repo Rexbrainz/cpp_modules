@@ -2,7 +2,7 @@
 #								HI THIS IS BRAIN                               #
 # **************************************************************************** #
 
-NAME        = ref
+NAME        = references
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++17
 
