@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 07:49:37 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/10 16:20:30 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:34:16 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <iostream>
 #include <string>
+
+constexpr int SIZE = 5;
 
 struct Zombie
 {
