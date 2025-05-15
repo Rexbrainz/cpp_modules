@@ -2,7 +2,7 @@
 #							FIXED POINT NUMBERS                               #
 # *************************************************************************** #
 
-NAME        = harlFilter
+NAME        = ruleofthree
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++17
 
