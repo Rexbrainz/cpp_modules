@@ -1,8 +1,8 @@
 #**************************************************************************** #
-#							FIXED POINT NUMBERS                               #
+#								        BSP                                   #
 # *************************************************************************** #
 
-NAME        = fpn
+NAME        = bsp
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++17
 
@@ -10,7 +10,7 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = include
 
-SRCS        = main.cpp Fixed.cpp
+SRCS        = main.cpp Fixed.cpp Point.cpp bsp.cpp
 OBJ        = $(SRCS:.cpp=.o)
 
 # Colors
