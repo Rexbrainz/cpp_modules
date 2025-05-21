@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Point.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmummadi <kmummadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 13:08:52 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/05/20 07:12:00 by kmummadi         ###   ########.fr       */
+/*   Created: 2025/05/21 13:40:11 by sudaniel          #+#    #+#             */
+/*   Updated: 2025/05/21 13:40:17 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
