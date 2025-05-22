@@ -10,7 +10,7 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = include
 
-SRCS        = main.cpp Fixed.cpp
+SRCS        = main.cpp ClapTrap.cpp
 OBJ        = $(SRCS:.cpp=.o)
 
 # Colors
