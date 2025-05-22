@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 07:15:03 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/22 09:34:08 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:12:27 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int main() {
     s1.attack("Bandit");
     s1.takeDamage(25);
     s1.beRepaired(10);
+	s1.guardGate();
+	s1.guardGate();
 
     std::cout << "\n--- Testing energy depletion for scavtrap ---\n" << std::endl;
     // Test energy depletion

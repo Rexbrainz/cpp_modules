@@ -14,7 +14,7 @@
 
 ClapTrap::ClapTrap(void) : name("")
 {
-    std::cout << "ClavTrap Default constructor called" << std::endl;
+    std::cout << "ClapTrap Default constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(std::string n) : name(n)
@@ -24,7 +24,7 @@ ClapTrap::ClapTrap(std::string n) : name(n)
 
 ClapTrap::ClapTrap(const ClapTrap& other)
 {
-    std::cout << "ClavTrap Copy constructor called" << std::endl;
+    std::cout << "ClapTrap Copy constructor called" << std::endl;
     name = other.name;
     hitPoints = other.hitPoints;
     energyPoints = other.energyPoints;
@@ -33,12 +33,12 @@ ClapTrap::ClapTrap(const ClapTrap& other)
 
 ClapTrap::~ClapTrap(void)
 {
-    std::cout << "ClavTrap Destructor called" << std::endl;
+    std::cout << "ClapTrap Destructor called" << std::endl;
 }
 
 ClapTrap&   ClapTrap::operator=(const ClapTrap& ro)
 {
-    std::cout << "ClavTrap Copy assignment operator called" << std::endl;
+    std::cout << "ClapTrap Copy assignment operator called" << std::endl;
     if (this == &ro)
         return (*this);
     name = ro.name;
