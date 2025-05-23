@@ -14,11 +14,17 @@
 
 FragTrap::FragTrap(void) : ClapTrap()
 {
+    setHitPoints(100);
+    setEnergyPoints(100);
+    setAttackDamage(30);
     std::cout << "FragTrap constructor called" << std::endl;
 }
 
 FragTrap::FragTrap(std::string n) : ClapTrap(n)
 {
+    setHitPoints(100);
+    setEnergyPoints(100);
+    setAttackDamage(30);
     std::cout << "FragTrap string constructor called" << std::endl;
 }
 

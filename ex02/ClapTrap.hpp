@@ -23,14 +23,22 @@ struct ClapTrap
     ClapTrap(const ClapTrap&);
     ~ClapTrap(void);
     ClapTrap&       operator=(const ClapTrap&);
-    void            attack(const std::string& target);
+    virtual void    attack(const std::string& target);
     void            takeDamage(unsigned int amount);
     void            beRepaired(unsigned int amount);
+    std::string     getName(void) const;
+    unsigned int    getHitPoints(void) const;
+    unsigned int    getEnergyPoints(void) const;
+    unsigned int    getAttackDamage(void) const;
+    void            setName(std::string);
+    void            setHitPoints(unsigned int);
+    void            setEnergyPoints(unsigned int);
+    void            setAttackDamage(unsigned int);
   private:
     std::string     name;
     unsigned int    hitPoints = 100;
-    unsigned int    energyPoints = 100;
-    unsigned int    attackDamage = 30;
+    unsigned int    energyPoints = 50;
+    unsigned int    attackDamage = 20;
 };
 
 #endif
