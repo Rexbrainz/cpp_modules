@@ -15,14 +15,15 @@
 
 #include "ClapTrap.hpp"
 
-struct ScavTrap : public ClapTrap
+struct ScavTrap : ClapTrap
 {
     ScavTrap(void);
     ScavTrap(std::string);
     ScavTrap(const ScavTrap&);
     ~ScavTrap(void);
-    ScavTrap&   operator=(const ScavTrap&);
-    void        guardGate(void);
+    ScavTrap&       operator=(const ScavTrap&);
+    void            guardGate(void);
+    void    attack(const std::string& target) override;
 };
 
 #endif
