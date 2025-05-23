@@ -36,9 +36,9 @@ struct ClapTrap
     void            setAttackDamage(unsigned int);
   private:
     std::string     name;
-    unsigned int    hitPoints = 100;
-    unsigned int    energyPoints = 50;
-    unsigned int    attackDamage = 20;
+    unsigned int    hitPoints = 10;
+    unsigned int    energyPoints = 10;
+    unsigned int    attackDamage = 0;
 };
 
 #endif
