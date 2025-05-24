@@ -26,15 +26,7 @@ struct ClapTrap
     virtual void    attack(const std::string& target);
     void            takeDamage(unsigned int amount);
     void            beRepaired(unsigned int amount);
-    std::string     getName(void) const;
-    unsigned int    getHitPoints(void) const;
-    unsigned int    getEnergyPoints(void) const;
-    unsigned int    getAttackDamage(void) const;
-    void            setName(std::string);
-    void            setHitPoints(unsigned int);
-    void            setEnergyPoints(unsigned int);
-    void            setAttackDamage(unsigned int);
-  private:
+  protected:
     std::string     name;
     unsigned int    hitPoints = 10;
     unsigned int    energyPoints = 10;

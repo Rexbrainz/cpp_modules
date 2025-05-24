@@ -12,12 +12,12 @@
 
 #include "DiamondTrap.hpp"
 
-DiamondTrap::DiamondTrap(void) : ClapTrap(""), FragTrap(), ScavTrap() 
+DiamondTrap::DiamondTrap(void) : ClapTrap(), FragTrap(), ScavTrap() 
 {
     name = "";
-    setHitPoints(FragTrap::getHitPoints());
-    setEnergyPoints(ScavTrap::getEnergyPoints());
-    setAttackDamage(FragTrap::getAttackDamage());
+    hitPoints = FragTrap::hitPoints;
+    energyPoints = ScavTrap::energyPoints;
+    attackDamage = FragTrap::attackDamage;
     std::cout << "DiamondTrap default constructor called" << std::endl;
 }
 
@@ -25,9 +25,9 @@ DiamondTrap::DiamondTrap(std::string n) :
     ClapTrap(n + "_clap_name"), FragTrap(n), ScavTrap(n)
 {
     name = n;
-    setHitPoints(FragTrap::getHitPoints());
-    setEnergyPoints(ScavTrap::getEnergyPoints());
-    setAttackDamage(FragTrap::getAttackDamage());
+    hitPoints = FragTrap::hitPoints;
+    energyPoints = ScavTrap::energyPoints;
+    attackDamage = FragTrap::attackDamage;
     std::cout << "DiamondTrap string constructor called" << std::endl;
 }
 
@@ -59,7 +59,7 @@ void    DiamondTrap::attack(const std::string& target)
 
 void    DiamondTrap::whoAmI(void)
 {
-    std::cout << "I am " << ClapTrap::getName() << " (" << name
+    std::cout << "I am " << ClapTrap::name << " (" << name
               << "). You aint reaaaady for me!" << std::endl;
 }
 

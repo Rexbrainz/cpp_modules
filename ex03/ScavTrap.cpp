@@ -14,17 +14,17 @@
 
 ScavTrap::ScavTrap(void) : ClapTrap()
 {
-    setHitPoints(100);
-    setEnergyPoints(50);
-    setAttackDamage(20);
+    hitPoints = 100;
+    energyPoints = 50;
+    attackDamage = 20;
     std::cout << "ScavTrap default constructor called" << std::endl;
 }
 
 ScavTrap::ScavTrap(std::string n) : ClapTrap(n)
 {
-    setHitPoints(100);
-    setEnergyPoints(50);
-    setAttackDamage(20);
+    hitPoints = 100;
+    energyPoints = 50;
+    attackDamage = 20;
     std::cout << "String constructor for ScavTrap called" << std::endl;
 }
 
@@ -49,17 +49,16 @@ ScavTrap&   ScavTrap::operator=(const ScavTrap& ro)
 
 void    ScavTrap::attack(const std::string& target)
 {
-    if (getEnergyPoints() == 0 || getHitPoints() == 0)
+    if (energyPoints == 0 || hitPoints == 0)
     {
-        std::cout << "ScavTrap " << getName() << " has no hit points"
+        std::cout << "ScavTrap " << name << " has no hit points"
                   << " or no energy and cannot attack" << std::endl;
         return ;
     }
-    std::cout << "ScavTrap " << getName() << " attacks "
-              << target << ", causing " << getAttackDamage()
+    std::cout << "ScavTrap " << name << " attacks "
+              << target << ", causing " << attackDamage
               << " points of damage!" << std::endl;
-    auto    energy = getEnergyPoints();
-    setEnergyPoints(--energy);
+    energyPoints--;
 }
 
 void    ScavTrap::guardGate(void)
