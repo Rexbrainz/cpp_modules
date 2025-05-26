@@ -32,17 +32,25 @@ int main(void)
     Dog   Hosky;
     std::cout << "Hosky is a: " << Hosky.getType() << std::endl;
 
-    Animal *cat;
-    cat = &minicat;
-    Animal *dog;
-    dog = &Hosky;
+    Animal animal;
+    animal = minicat;
+    Dog dog;
+    dog = Hosky;
 
-    std::cout << "Cat sound: ";
-    cat->makeSound();
+    const WrongAnimal*  wrongCat = new WrongCat();
+    const WrongAnimal   wCat = (WrongCat());
+    std::cout << "WrongCat sound: ";
+    wrongCat->makeSound();
+    wCat.makeSound();
+
+
+    std::cout << "animal sound: ";
+    animal.makeSound();
     std::cout << "Dog sound: ";
-    dog->makeSound();
+    dog.makeSound();
     delete meta;
     delete j;
     delete i;
+    delete wrongCat;
     return (0);
 }
