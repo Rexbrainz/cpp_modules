@@ -39,7 +39,6 @@ int main(void)
     for (const auto i : meta)
          delete i;
         
-    //Mine
     delete j;
     delete i;
     //system("leaks polymorphism");
