@@ -12,30 +12,15 @@
 
 #include "AMateria.hpp"
 
-AMateria::AMateria(void) : m_type{""}
-{
-    std::cout << "AMateria default constructor called" << std::endl;
-}
+AMateria::AMateria(void) : m_type{""} {}
 
-AMateria::AMateria(std::string const& type) : m_type{type}
-{
-    std::cout << "AMateria string constructor called" << std::endl;
-}
+AMateria::AMateria(std::string const& type) : m_type{type} {}
 
-AMateria::AMateria(const AMateria&)
-{
-    std::cout << "Copying the type of a Materia does not make sense" << std::endl;
-}
+AMateria::AMateria(const AMateria&) {}
 
-void   AMateria::operator=(const AMateria&)
-{
-    std::cout << "Copying the type of a Materia does not make sense" << std::endl;
-}
+void   AMateria::operator=(const AMateria&) {}
 
-AMateria::~AMateria(void)
-{
-    std::cout << "AMateria destructor called" << std::endl;
-}
+AMateria::~AMateria(void) {}
 
 std::string const& AMateria::getType(void) const
 {

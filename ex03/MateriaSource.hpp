@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:26:27 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/26 16:28:11 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:13:54 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #define MATERIA_SOURCE_HPP
 
 #include "IMateriaSource.hpp"
+#include "Floor.hpp"
 
-struct  MateriaSource
+struct  MateriaSource : IMateriaSource
 {
     MateriaSource(void);
     MateriaSource(const MateriaSource&);
@@ -25,7 +26,8 @@ struct  MateriaSource
     AMateria*       createMateria(std::string const& type);
   private:
     AMateria*       m_tempBuffer[SIZE];
-    unsigned int    m_index = 0;
+    unsigned int    m_index;
+    unsigned int    m_learnedMateria;
 };
 
 #endif

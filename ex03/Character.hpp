@@ -14,8 +14,9 @@
 #define CHARACTER_HPP
 
 #include "ICharacter.hpp"
+#include "MateriaSource.hpp"
+#include "Floor.hpp"
 
-const int   FLOOR_SIZE = 50;
 
 struct  Character : ICharacter
 {
@@ -28,13 +29,10 @@ struct  Character : ICharacter
     void                equip(AMateria* m);
     void                unequip(int idx);
     void                use(int idx, ICharacter& target);
-    void                addToFloor(AMateria*);
   private:
     std::string     m_name;
     AMateria*       m_inventory[SIZE];
-    unsigned int    m_slots = 0;
-    AMateria*       m_floor[FLOOR_SIZE];
-    unsigned int    m_floor_index = 0;
+    unsigned int    m_slots;
 };
 
 #endif

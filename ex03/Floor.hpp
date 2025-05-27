@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ICharacter.hpp                                     :+:      :+:    :+:   */
+/*   Floor.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 12:20:28 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/26 13:56:49 by sudaniel         ###   ########.fr       */
+/*   Created: 2025/05/27 06:33:21 by sudaniel          #+#    #+#             */
+/*   Updated: 2025/05/27 08:51:37 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ICHARACTER_HPP
-#define ICHARACTER_HPP
+#ifndef FLOOR_HPP
+#define FLOOR_HPP
 
-//#include "AMateria.hpp"
-#include <iostream>
-#include <string>
+#include "Character.hpp"
 
-struct AMateria;
 
-struct  ICharacter
+struct Floor
 {
-    virtual ~ICharacter(void) {}
-    virtual std::string const&  getName() const = 0;
-    virtual void                equip(AMateria* m) = 0;
-    virtual void                unequip(int idx) = 0;
-    virtual void                use(int idx, ICharacter& target) = 0;
+    Floor(void);
+    Floor(const Floor&);
+    Floor&  operator=(const Floor&);
+    ~Floor(void);
+    void    dropMateria(AMateria*);
+    static Floor&   getFloor(void);
+  private:
+    AMateria**      m_floor;
+    unsigned int    m_size;
+    unsigned int    m_index;
+    void            resize(void);
 };
 
 #endif
