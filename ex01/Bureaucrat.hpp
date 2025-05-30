@@ -15,6 +15,9 @@
 
 #include <iostream>
 #include <string>
+#include "Form.hpp"
+
+struct Form;
 
 const       std::string DEFAULT_NAME = "Default";
 constexpr   int DEFAULT_GRADE = 75;
@@ -26,10 +29,11 @@ struct  Bureaucrat
     Bureaucrat(const Bureaucrat&);
     Bureaucrat& operator=(const Bureaucrat&);
     ~Bureaucrat(void);
-    void    incrementGrade(void);
-    void    decrementGrade(void);
-    const std::string&     getName(void) const;
-    unsigned int    getGrade(void) const;
+    void                    incrementGrade(void);
+    void                    decrementGrade(void);
+    const std::string&      getName(void) const;
+    unsigned int            getGrade(void) const;
+    void                    signForm(Form&);
 
     struct GradeTooHighException : std::range_error
     {
@@ -45,7 +49,7 @@ struct  Bureaucrat
 
   private:
     const std::string   m_name;
-    unsigned int         m_grade;
+    unsigned int        m_grade;
 };
 
 std::ostream&    operator<<(std::ostream&, const Bureaucrat&);

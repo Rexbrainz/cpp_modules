@@ -60,6 +60,21 @@ void    Bureaucrat::decrementGrade(void)
     ++m_grade;
 }
 
+void    Bureaucrat::signForm(Form& f)
+{
+    try
+    {
+        f.beSigned(*this);
+        std::cout << m_name << " signed " << f.getName() << std::endl;
+    }
+    catch (const Form::GradeTooLowException& e)
+    {
+        std::cout << m_name << " couldn't sign " << f.getName()
+                  << " because " << e.what() << std::endl;
+    }
+
+}
+
 std::ostream&   operator<<(std::ostream& os, const Bureaucrat& b)
 {
     os << b.getName() << ", bureaucrat grade " 
@@ -70,14 +85,14 @@ std::ostream&   operator<<(std::ostream& os, const Bureaucrat& b)
 //GradeTooHighException Implementation
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(void)
-    : range_error{"Grade too High"} {}
+    : range_error{"Bureaucrat: Grade too High"} {}
 
 Bureaucrat::GradeTooHighException::GradeTooHighException(const char* e)
     :   range_error{e} {}
 
 //GradeTooLowException Implementation
 Bureaucrat::GradeTooLowException::GradeTooLowException(void)
-    : range_error{"Grade too Low"} {}
+    : range_error{"Bureaucrat: Grade too Low"} {}
 
 Bureaucrat::GradeTooLowException::GradeTooLowException(const char* e)
     :   range_error{e} {}

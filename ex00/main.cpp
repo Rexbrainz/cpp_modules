@@ -26,7 +26,7 @@ int main(void)
     }
     catch (const Bureaucrat::GradeTooHighException& aExcept)
     {
-        std::cerr << aExcept.getMsg() << std::endl;
+        std::cerr << aExcept.what() << std::endl;
     }
     try
     {
@@ -34,15 +34,15 @@ int main(void)
     }
     catch (const Bureaucrat::GradeTooLowException& bExcept)
     {
-        std::cerr << bExcept.getMsg() << std::endl;
+        std::cerr << bExcept.what() << std::endl;
     }
     try
     {
         Bureaucrat  c{"Pasha", 157};
     }
-    catch (const Bureaucrat::GradeTooLowException cExcept)
+    catch (const std::exception& cExcept)
     {
-        std::cerr << cExcept.getMsg() << std::endl;
+        std::cerr << cExcept.what() << std::endl;
     }
     return (0);
 }
