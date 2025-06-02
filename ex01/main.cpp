@@ -24,5 +24,6 @@ int main(void)
     a.signForm(f1);
     std::cout << a << std::endl;
     std::cout << f1 << std::endl;
+    std::cout << a << "and" << f1 << std::endl;
     return (0);
 }

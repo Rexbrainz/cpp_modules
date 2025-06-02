@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.cpp                                           :+:      :+:    :+:   */
+/*   AForm.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:14:04 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/30 18:04:22 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:56:27 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "AForm.hpp"
 
 AForm::AForm(void) : m_name{"Form"}, m_isSigned{false}, 
             m_gradeToSign{25}, m_gradeToExecute{10} {}

@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/29 16:59:47 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:13:12 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 #include <iostream>
 #include <string>
-#include "Form.hpp"
+#include "AForm.hpp"
 
-struct AForm;
+ struct AForm;
 
 const       std::string DEFAULT_NAME = "Default";
 constexpr   int DEFAULT_GRADE = 75;
@@ -34,6 +34,7 @@ struct  Bureaucrat
     const std::string&      getName(void) const;
     unsigned int            getGrade(void) const;
     void                    signForm(AForm&);
+    void                    executeForm(AForm const&);
 
     struct GradeTooHighException : std::range_error
     {

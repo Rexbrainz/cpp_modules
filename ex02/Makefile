@@ -10,7 +10,9 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = include
 
-SRCS        = main.cpp Bureaucrat.cpp Form.cpp
+SRCS        = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp\
+				RobotomyRequestForm.cpp PresidentialPardonForm.cpp
+
 OBJ        = $(SRCS:.cpp=.o)
 
 # Colors

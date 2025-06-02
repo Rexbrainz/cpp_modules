@@ -6,14 +6,14 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 17:04:03 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/30 18:04:00 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:13:10 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ShrubberyCreationForm.hpp"
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string& s)
-    :   m_target{s}, AForm{"ShrubberyCreationForm", false, 145, 137}
+    : AForm{"ShrubberyCreationForm", false, 145, 137}, m_target{s}
 {}
 
 ShrubberyCreationForm::
@@ -34,11 +34,11 @@ ShrubberyCreationForm&
 
 ShrubberyCreationForm::~ShrubberyCreationForm(void) {}
 
-void    ShrubberyCreationForm::execute(Bureaucrat const& b) const
+void    ShrubberyCreationForm::execute(Bureaucrat const& e) const
 {
     if (!getSign())
         throw GradeTooLowException("Execution failed: Form not signed");
-    if (!verifyExecPermission(b))
+    if (!verifyExecPermission(e))
         throw GradeTooLowException("Execution Failed: Grade too Low");
 
     std::ofstream   out(m_target + "_shrewbbery");
@@ -52,5 +52,4 @@ void    ShrubberyCreationForm::execute(Bureaucrat const& b) const
         << std::endl;
     out.close();
 }
-
 

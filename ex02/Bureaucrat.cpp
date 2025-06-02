@@ -6,7 +6,7 @@
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:47:57 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/05/29 16:59:42 by sudaniel         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:13:05 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,19 @@ void    Bureaucrat::signForm(AForm& f)
                   << " because " << e.what() << std::endl;
     }
 
+}
+
+void    Bureaucrat::executeForm(AForm const& f)
+{
+    try 
+    {
+        f.execute(*this);
+    }
+    catch (const GradeTooLowException&  e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    std::cout << *this << " executed " << f << std::endl;
 }
 
 std::ostream&   operator<<(std::ostream& os, const Bureaucrat& b)
