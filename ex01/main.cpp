@@ -19,9 +19,31 @@ int main(void)
     Form        f1{"Employment", false, 25, 10};
 
     std::cout << "Form1: " << f1 << std::endl;
-    b.signForm(f1);
+    try
+    {
+        b.signForm(f1);
+    }
+    catch (Form::GradeTooLowException& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (Form::GradeTooHighException& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
     std::cout << b << std::endl;
-    a.signForm(f1);
+    try
+    {
+        a.signForm(f1);
+    }
+    catch (Form::GradeTooLowException& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    catch (Form::GradeTooHighException& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
     std::cout << a << std::endl;
     std::cout << f1 << std::endl;
     std::cout << a << " and " << f1 << std::endl;
