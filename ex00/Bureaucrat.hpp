@@ -45,7 +45,7 @@ struct  Bureaucrat
 
   private:
     const std::string   m_name;
-    unsigned int         m_grade;
+    unsigned int        m_grade;
 };
 
 std::ostream&    operator<<(std::ostream&, const Bureaucrat&);

@@ -22,6 +22,7 @@ int main(void)
 
     try
     {
+        std::cout << "Attempt to increment Bureaucrat a" << std::endl;
         a.incrementGrade();
     }
     catch (const Bureaucrat::GradeTooHighException& aExcept)
@@ -30,6 +31,7 @@ int main(void)
     }
     try
     {
+        std::cout << "Attempt to increment Bureaucrat b" << std::endl;
         b.decrementGrade();
     }
     catch (const Bureaucrat::GradeTooLowException& bExcept)
@@ -38,6 +40,7 @@ int main(void)
     }
     try
     {
+        std::cout << "Attempt to create Bureaucrat c" << std::endl;
         Bureaucrat  c{"Pasha", 157};
     }
     catch (const std::exception& cExcept)
