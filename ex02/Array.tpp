@@ -23,9 +23,8 @@ Array<T>::~Array()
 }
 
 template<typename T>
-Array<T>::Array(const Array& other) : m_size(other.size())
+Array<T>::Array(const Array& other) : Array(other.size())
 {
-    m_array = new T[m_size];
     for (size_type i = 0; i < m_size; ++i)
         m_array[i] = other.m_array[i];
 }
