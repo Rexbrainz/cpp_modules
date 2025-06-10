@@ -32,14 +32,9 @@ Array<T>::Array(const Array& other) : Array(other.size())
 template<typename T>
 Array<T>&  Array<T>::operator=(const Array& rhs)
 {
-    if (this != &rhs)
-    {
-        delete[] m_array;
-        m_size = rhs.size();
-        m_array = new T[m_size];
-        for (size_type i = 0; i < m_size; ++i)
-            m_array[i] = rhs.m_array[i];
-    }
+    Array   temp{rhs};
+
+    swap(temp);
     return (*this);
 }
 
@@ -70,3 +65,15 @@ void    Array<T>::verifyIndex(size_type index) const
         throw std::out_of_range("out of range index");
 }
                                                      
+template<typename T>
+void    Array<T>::swap(Array& other) noexcept
+{
+    std::swap(m_size, other.m_size);
+    std::swap(other.m_array);
+}
+
+template<typename T>
+void    swap(Array<T>& first, Array<T>& second) noexcept
+{
+    first.swap(second);
+}
