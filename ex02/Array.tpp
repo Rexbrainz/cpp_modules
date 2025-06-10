@@ -32,7 +32,7 @@ Array<T>::Array(const Array& other) : Array(other.size())
 template<typename T>
 Array<T>&  Array<T>::operator=(const Array& rhs)
 {
-    Array   temp{rhs};
+    Array<T>   temp{rhs};
 
     swap(temp);
     return (*this);
@@ -69,7 +69,7 @@ template<typename T>
 void    Array<T>::swap(Array& other) noexcept
 {
     std::swap(m_size, other.m_size);
-    std::swap(other.m_array);
+    std::swap(m_array, other.m_array);
 }
 
 template<typename T>
