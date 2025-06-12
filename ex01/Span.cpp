@@ -90,7 +90,9 @@ int Span::shortestSpan()
 int Span::longestSpan()
 {
     isSpan();
-    auto    minMax = std::minmax_element(m_ivec.begin(), m_ivec.end());
+
+    auto    minMax = std::minmax_element(m_ivec.begin(),
+                                         m_ivec.end());
     return (*minMax.second - *minMax.first);
 }
 
