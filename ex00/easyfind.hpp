@@ -14,15 +14,17 @@
 #define EASYFIND_HPP
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 template<typename T>
 int easyfind(T c, int target)
 {
-    for (auto b = c.begin(); b != c.end(); ++b)
-        if (*b == target)
-            return (b - c.begin());
-    return (-1);
+    auto f = std::find(c.begin(), c.end(), target);
+    if (f != c.end())
+        return (f - c.begin());
+    else
+        return (-1);
 }
 
 #endif
