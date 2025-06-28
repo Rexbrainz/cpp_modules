@@ -157,11 +157,15 @@ void    BitcoinExchange::processLine(const std::string& line) const
         auto [date, value] { split(line, " | ", false) };
         auto it { m_data.lower_bound(date) };
         if (it == end(m_data))
+            --it ;
+        else if (it->first != date && it != begin(m_data))
+            --it ;
+        else if (it->first != date && it == begin(m_data))
+        {
+            std::cout << "Date not found and there is no previous date."
+                    << std::endl;
             return ;
-        if (date != it->first && it == begin(m_data))
-            return ;
-        if (date != it->first && it != begin(m_data))
-            --it;
+        }
         std::cout << it->first << " => " << value << " = "
                     << value * it->second << std::endl;
     }
