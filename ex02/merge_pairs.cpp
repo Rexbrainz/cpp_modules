@@ -16,6 +16,7 @@ struct  LabeledPairs
 
 struct LabeledElement
 {
+    char    c;
     int     index { };
     Element element;
 };
@@ -105,26 +106,83 @@ MergedAndRest    merge_sequence(vector<int> sequence, int pair_size, int& count)
 }
 
 
-void    initialize_chains(vector<LabeledPairs> l_p, vector<int> rest)
+void    initialize_chains(const vector<LabeledPairs>& l_p,
+                          vector<LabeledElement>& main,
+                          vector<LabeledElement>& pend)
 {
-    vector<LabeledElement>  main;
-    vector<LabeledElement>  pend;
-    vector<int>             non_participating;
-
     auto b { begin(l_p) };
     auto e { end(l_p) };
 
-    main.push_back({b->index, b->element_b});
-    main.push_back({b->index, b->element_a});
+    main.push_back({'b', b->index, b->element_b});
+    main.push_back({'a', b->index, b->element_a});
     ++b;
     while (b != e)
     {
         if (!b->element_a.empty())
-            main.push_back({b->index, b->element_a});
-        pend.push_back({b->index, b->element_b});
+            main.push_back({'a', b->index, b->element_a});
+        pend.push_back({'b', b->index, b->element_b});
         ++b;
     }
+}
 
+vector<int> generateJacobsThalNumbers(int n)
+{
+    vector<int> j_numbers {0, 1};
+
+    int j { 2 };
+    for (;;)
+    {
+        int next { j_numbers[j - 1] + 2 * j_numbers[j - 2] };
+        if (next >= n)
+            break ;
+        j_numbers.push_back(next);
+    }
+    return { begin(j_numbers) + 2, end(j_numbers) };
+}
+
+void    insert(vector<LabeledElement>& main,
+               const vector<LabeledElement>& element_to_insert,
+               int& count)
+{
+    vector<LabeledElement>  insertion_area;
+
+    for (auto b { begin(main) }; b != end(main); ++b)
+    {
+        if (b->c == 'a' && element_to_insert[0].index == b->index)
+            break ;
+        insertion_area.push_back(*b);
+    }
+    auto low { begin(insertion_area) };
+    auto high { end(insertion_area) };
+    while (low < high)
+    {
+        auto mid { low + (high - low) / 2 };
+        if (compare(mid->element.back(), element_to_insert[0].element.back(), &count))
+            high = mid;
+        else
+            low = mid + 1;
+    }
+    insertion_area.insert(low, begin(element_to_insert), end(element_to_insert));
+    main.insert(begin(main), begin(insertion_area), end(insertion_area));
+}
+
+void    insert_pend_into_main(vector<LabeledElement> main, vector<LabeledElement> pend, int& count)
+{
+    vector<int> j_numbers { generateJacobsThalNumbers(pend.size()) };
+
+    int i { j_numbers[0] };
+    while (!pend.empty())
+    {
+        int j { j_numbers[++i] };
+        while (j > j_numbers[i - 1])
+        {
+            // pend is initialized at pos 0 with b2, so j_number n 
+            // is always at n - 2 in the pend chain
+            vector<LabeledElement> element_to_insert { pend[j - 2] };
+            insert(main, element_to_insert, count);
+            --j;
+        }
+    }
 }
 
 int main()
