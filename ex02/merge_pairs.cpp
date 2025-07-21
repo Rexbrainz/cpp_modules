@@ -26,6 +26,7 @@ struct MergedAndRest
     vector<LabeledPairs>    pairs;
     vector<int>             rest;
     vector<int>             new_sequence;
+    int                     pair_size;
 };
 
 using Pair = vector<Element>;
@@ -93,7 +94,7 @@ MergedAndRest    merge_sequence(vector<int> sequence, int pair_size, int& count)
     if (i < sequence.size())
         remaining_numbers.insert(end(remaining_numbers), begin(sequence) + i, end(sequence));
     if (labeled_pairs.size() <= 1)
-        return {labeled_pairs, remaining_numbers, sequence};
+        return {labeled_pairs, remaining_numbers, sequence, pair_size};
     vector<int> new_sequence;
     for (const auto& e : labeled_pairs)
     {
@@ -141,14 +142,14 @@ vector<int> generateJacobsThalNumbers(int n)
 }
 
 void    insert(vector<LabeledElement>& main,
-               const vector<LabeledElement>& element_to_insert,
+               const vector<LabeledElement>::const_iterator it,
                int& count)
 {
     vector<LabeledElement>  insertion_area;
 
     for (auto b { begin(main) }; b != end(main); ++b)
     {
-        if (b->c == 'a' && element_to_insert[0].index == b->index)
+        if (b->c == 'a' && (*it).index == b->index)
             break ;
         insertion_area.push_back(*b);
     }
@@ -157,32 +158,109 @@ void    insert(vector<LabeledElement>& main,
     while (low < high)
     {
         auto mid { low + (high - low) / 2 };
-        if (compare(mid->element.back(), element_to_insert[0].element.back(), &count))
+        if (compare(mid->element.back(), (*it).element.back(), &count))
             high = mid;
         else
             low = mid + 1;
     }
-    insertion_area.insert(low, begin(element_to_insert), end(element_to_insert));
-    main.insert(begin(main), begin(insertion_area), end(insertion_area));
+    main.insert(low, it, it + 1);
 }
 
 void    insert_pend_into_main(vector<LabeledElement> main, vector<LabeledElement> pend, int& count)
 {
+    if (pend.empty())
+        return ;
+
     vector<int> j_numbers { generateJacobsThalNumbers(pend.size()) };
 
-    int i { j_numbers[0] };
-    while (!pend.empty())
+    int index { };
+    while (index < j_numbers.size())
     {
-        int j { j_numbers[++i] };
-        while (j > j_numbers[i - 1])
+        int j { j_numbers[++index] };
+        while (j > j_numbers[index - 1])
         {
             // pend is initialized at pos 0 with b2, so j_number n 
             // is always at n - 2 in the pend chain
-            vector<LabeledElement> element_to_insert { pend[j - 2] };
-            insert(main, element_to_insert, count);
+            auto it { begin(pend) + j - 2 };
+            insert(main, it, count);
+            pend.erase(it);
             --j;
         }
     }
+    if (!pend.empty())
+    {
+        auto e { end(pend) - 1 };
+        while (!pend.empty())
+        {
+            insert(main, e, count);
+            pend.erase(e);
+            e = end(pend) - 1;
+        }
+    }
+}
+
+vector<int> make_final_sequence(vector<LabeledPairs>& pairs)
+{
+    vector<int> sequence;
+
+    for (auto& e : pairs)
+    {
+        sequence.insert(end(sequence), begin(e.element_b), end(e.element_b));
+        sequence.insert(end(sequence), begin(e.element_a), end(e.element_a));
+    }
+    return (sequence);
+}
+vector<LabeledPairs>    make_pairs(vector<LabeledElement> main,
+                                   int pair_size, vector<int> rest)
+{
+    vector<int>             new_sequence;
+    vector<LabeledPairs>    pairs;
+    int                     index { };
+    int                     element_size { pair_size / 2 };
+
+    //Make sequence
+    for (auto& e : main)
+        new_sequence.insert(end(new_sequence), begin(e.element), end(e.element));
+    new_sequence.insert(end(new_sequence), begin(rest), end(rest));
+    //Form complete pairs
+    auto b { begin(new_sequence) };
+    auto e { end(new_sequence) };
+    for (; b + pair_size <= e;)
+    {
+        Element  elementB { b, b + element_size };
+        b += element_size;
+        Element  elementA { b, b + element_size };
+        LabeledPairs    aPair { ++index, elementB, elementA };
+        pairs.push_back(aPair);
+        b += element_size;
+    }
+    //If enough for an element, form a partial pair
+    if (b + element_size != e)
+    {
+        Element  elementB { b, b + element_size };
+        LabeledPairs    partial_pair { ++index, elementB, {}, true };
+        pairs.push_back(partial_pair);
+        b += element_size;
+    }
+    //Add remaining elements to rest
+    if (b != e)
+        rest.insert(end(rest), b, e);
+    return (pairs);
+}
+vector<int>    initAndInsert(vector<LabeledPairs>& pairs, vector<int>& rest,
+                      int& count)
+{
+    vector<LabeledElement>  main;
+    vector<LabeledElement>  pend;
+    size_t                  new_pair_size { pairs.front().element_b.size() * 2 };
+    size_t                  element_size { new_pair_size / 2 };
+
+    if (!element_size)
+        return make_final_sequence(pairs);
+    initialize_chains(pairs, main, pend);
+    insert_pend_into_main(main, pend, count);
+    auto new_pairs { make_pairs(main, new_pair_size, rest) };
+    return (initAndInsert(new_pairs, rest, count));
 }
 
 int main()
@@ -191,10 +269,13 @@ int main()
     vector<int> s {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7};
     int count { };
 
-    auto result { merge_sequence(s, 2, count) };
+    auto merged { merge_sequence(s, 2, count) };
+    auto result { initAndInsert(merged.pairs, merged.rest, count)};
     cout << "number of comparisons are: " << count << endl;
     cout << "Final result:";
-    print(result.new_sequence, result.pairs, result.rest);
+    for (auto i : result)
+        cout << i << " ";
+    cout << endl;
     
     return (0);
 }
