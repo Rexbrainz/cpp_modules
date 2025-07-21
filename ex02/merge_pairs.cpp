@@ -166,7 +166,7 @@ void    insert(vector<LabeledElement>& main,
     main.insert(low, it, it + 1);
 }
 
-void    insert_pend_into_main(vector<LabeledElement> main, vector<LabeledElement> pend, int& count)
+void    insert_pend_into_main(vector<LabeledElement>& main, vector<LabeledElement>& pend, int& count)
 {
     if (pend.empty())
         return ;
@@ -189,12 +189,11 @@ void    insert_pend_into_main(vector<LabeledElement> main, vector<LabeledElement
     }
     if (!pend.empty())
     {
-        auto e { end(pend) - 1 };
         while (!pend.empty())
         {
+            auto e = end(pend) - 1;
             insert(main, e, count);
             pend.erase(e);
-            e = end(pend) - 1;
         }
     }
 }
