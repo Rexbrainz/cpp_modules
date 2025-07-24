@@ -29,9 +29,7 @@ struct MergedAndRest
     int                     pair_size;
 };
 
-using Pair = vector<Element>;
-
-bool    compare(int a, int b, int* numOfComparisons)
+bool    compare(int a, int b)
 {
     ++(*numOfComparisons);
     return (a > b);
@@ -76,7 +74,6 @@ MergedAndRest    merge_sequence(vector<int> sequence, int pair_size, int& count)
     size_t i { };
     for (; i + pair_size <= sequence.size(); i += pair_size)
     {
-        //handle first element of a pair
         Element element_b(sequence.begin() + i, sequence.begin() + i + pair_size / 2);
         Element element_a(sequence.begin() + i + pair_size / 2, sequence.begin() + i + pair_size);
         if (compare(element_b.back(), element_a.back(), &count))
@@ -93,6 +90,7 @@ MergedAndRest    merge_sequence(vector<int> sequence, int pair_size, int& count)
     }
     if (i < sequence.size())
         remaining_numbers.insert(end(remaining_numbers), begin(sequence) + i, end(sequence));
+    //print(sequence, labeled_pairs, remaining_numbers);
     if (labeled_pairs.size() <= 1)
         return {labeled_pairs, remaining_numbers, sequence, pair_size};
     vector<int> new_sequence;
@@ -124,6 +122,25 @@ void    initialize_chains(const vector<LabeledPairs>& l_p,
         pend.push_back({'b', b->index, b->element_b});
         ++b;
     }
+    cout << "main in init chains -> " << std::flush;
+     for (size_t i { 0 }; i < main.size(); ++i)
+    {
+        cout << "( ";
+        for (size_t j { 0 }; j < main[i].element.size(); ++j)
+            cout << main[i].element[j] << " ";
+        cout << ")";
+    }
+    cout << endl;
+    cout << "pend in init chains -> " << std::flush;
+    for (size_t i { 0 }; i < pend.size(); ++i)
+    {
+        cout << "( ";
+        for (size_t j { 0 }; j < pend[i].element.size(); ++j)
+            cout << pend[i].element[j] << " ";
+        cout << ")";
+    }
+    cout << endl;
+    cout << "initialize chains went through" << endl;
 }
 
 vector<int> generateJacobsThalNumbers(int n)
@@ -134,10 +151,12 @@ vector<int> generateJacobsThalNumbers(int n)
     for (;;)
     {
         int next { j_numbers[j - 1] + 2 * j_numbers[j - 2] };
-        if (next >= n)
-            break ;
         j_numbers.push_back(next);
+        if (next > n)
+            break ;
+        ++j;
     }
+    cout << "Generating jacobsthal part went through" << endl;
     return { begin(j_numbers) + 2, end(j_numbers) };
 }
 
@@ -145,16 +164,18 @@ void    insert(vector<LabeledElement>& main,
                const vector<LabeledElement>::const_iterator it,
                int& count)
 {
-    vector<LabeledElement>  insertion_area;
+    auto  insert_end { end(main) };
 
     for (auto b { begin(main) }; b != end(main); ++b)
     {
-        if (b->c == 'a' && (*it).index == b->index)
+        if (b->c == 'a' && it->index == b->index)
+        {
+            insert_end = b;
             break ;
-        insertion_area.push_back(*b);
+        }
     }
-    auto low { begin(insertion_area) };
-    auto high { end(insertion_area) };
+    auto low { begin(main) };
+    auto high { insert_end };
     while (low < high)
     {
         auto mid { low + (high - low) / 2 };
@@ -163,55 +184,87 @@ void    insert(vector<LabeledElement>& main,
         else
             low = mid + 1;
     }
-    main.insert(low, it, it + 1);
+    main.insert(low, *it);
+    cout << "Inserted " << it->c << it->index << endl;
 }
 
 void    insert_pend_into_main(vector<LabeledElement>& main, vector<LabeledElement>& pend, int& count)
 {
+    std::cout << "we are in insert_pend_into_main" << std::endl;
     if (pend.empty())
         return ;
 
-    vector<int> j_numbers { generateJacobsThalNumbers(pend.size()) };
+     cout << "main in insert_pend_into_main -> " << std::flush;
+     for (size_t i { 0 }; i < main.size(); ++i)
+    {
+        cout << "( ";
+        for (size_t j { 0 }; j < main[i].element.size(); ++j)
+            cout << main[i].element[j] << " ";
+        cout << ")";
+    }
+    cout << endl;
+    cout << "pend in insert_pend_into_main -> " << std::flush;
+    for (size_t i { 0 }; i < pend.size(); ++i)
+    {
+        cout << "( ";
+        for (size_t j { 0 }; j < pend[i].element.size(); ++j)
+            cout << pend[i].element[j] << " ";
+        cout << ")";
+    }
+    cout << endl;
 
-    int index { };
-    while (index < j_numbers.size())
+    vector<int> j_numbers { generateJacobsThalNumbers(pend.size()) };
+    if (j_numbers.empty())
+        return ;
+    cout << "Pend size: " << pend.size() << ", Jacobsthal: ";
+    for (auto j : j_numbers)
+        cout << j << " ";
+    cout << endl;
+    vector<bool> inserted(pend.size(), false);
+    for (size_t i { 1 }; i < j_numbers.size(); ++i)
     {
-        int j { j_numbers[++index] };
-        while (j > j_numbers[index - 1])
+
+        int j { j_numbers[i] };
+        int prev_j { j_numbers[i - 1] };
+        for (int k { j - 1 }; k >= prev_j; --k)
         {
-            // pend is initialized at pos 0 with b2, so j_number n 
-            // is always at n - 2 in the pend chain
-            auto it { begin(pend) + j - 2 };
-            insert(main, it, count);
-            pend.erase(it);
-            --j;
+            if (k < 0 || static_cast<size_t>(k) >= pend.size())
+                break ;
+            if (!inserted[k - 1])
+            {
+                insert(main, begin(pend) + k - 1, count);
+                inserted[k - 1] = true;
+            }
         }
     }
-    if (!pend.empty())
+    for (int i { static_cast<int>(pend.size()) - 1 }; i >= 0; --i)
     {
-        while (!pend.empty())
-        {
-            auto e = end(pend) - 1;
-            insert(main, e, count);
-            pend.erase(e);
-        }
+        if (!inserted[i])
+            insert(main, begin(pend) + i, count);
     }
+    pend.clear();
+    cout << "Successfully inserted pend" << endl;
 }
 
-vector<int> make_final_sequence(vector<LabeledPairs>& pairs)
+vector<int> make_final_sequence(vector<LabeledElement>& main)
 {
+
+    std::cout << "we are in make_final_sequence" << std::endl;
     vector<int> sequence;
 
-    for (auto& e : pairs)
+    for (auto& e : main)
     {
-        sequence.insert(end(sequence), begin(e.element_b), end(e.element_b));
-        sequence.insert(end(sequence), begin(e.element_a), end(e.element_a));
+        sequence.insert(end(sequence), begin(e.element), end(e.element));
     }
+    for (auto number : sequence)
+        std::cout << number << " ";
+    std::cout << " <- this was the sequenc in make_final_sequence" << std::endl;
     return (sequence);
 }
-vector<LabeledPairs>    make_pairs(vector<LabeledElement> main,
-                                   int pair_size, vector<int> rest)
+vector<LabeledPairs>    make_pairs(vector<LabeledElement> &main,
+                                   int pair_size, vector<int> &rest)
 {
+    std::cout << "we are in make_pairs" << std::endl;
     vector<int>             new_sequence;
     vector<LabeledPairs>    pairs;
     int                     index { };
@@ -221,20 +274,25 @@ vector<LabeledPairs>    make_pairs(vector<LabeledElement> main,
     for (auto& e : main)
         new_sequence.insert(end(new_sequence), begin(e.element), end(e.element));
     new_sequence.insert(end(new_sequence), begin(rest), end(rest));
+    rest.clear();
+    cout << "new_sequence in make_pairs-> ";
+    for (auto i : new_sequence)
+        cout << i << " ";
+    cout << endl;
     //Form complete pairs
     auto b { begin(new_sequence) };
     auto e { end(new_sequence) };
     for (; b + pair_size <= e;)
     {
-        Element  elementB { b, b + element_size };
-        b += element_size;
-        Element  elementA { b, b + element_size };
+        auto mid { b + element_size };
+        Element  elementB { b, mid };
+        Element  elementA { mid, mid + element_size };
         LabeledPairs    aPair { ++index, elementB, elementA };
         pairs.push_back(aPair);
-        b += element_size;
+        b += pair_size;
     }
     //If enough for an element, form a partial pair
-    if (b + element_size != e)
+    if (distance(b, e) >= element_size)
     {
         Element  elementB { b, b + element_size };
         LabeledPairs    partial_pair { ++index, elementB, {}, true };
@@ -244,37 +302,47 @@ vector<LabeledPairs>    make_pairs(vector<LabeledElement> main,
     //Add remaining elements to rest
     if (b != e)
         rest.insert(end(rest), b, e);
+    cout << "Make pairs went through" << endl;
     return (pairs);
 }
-vector<int>    initAndInsert(vector<LabeledPairs>& pairs, vector<int>& rest,
+vector<int>    initAndInsert(vector<LabeledPairs>& pairs, int pair_size, vector<int>& rest,
                       int& count)
 {
     vector<LabeledElement>  main;
     vector<LabeledElement>  pend;
-    size_t                  new_pair_size { pairs.front().element_b.size() * 2 };
-    size_t                  element_size { new_pair_size / 2 };
+    int                     new_pair_size { pair_size / 2 };
 
-    if (!element_size)
-        return make_final_sequence(pairs);
+    if (pair_size == 2)
+    {
+        vector<LabeledElement>  main;
+        vector<LabeledElement>  pend;
+        initialize_chains(pairs, main, pend);
+        insert_pend_into_main(main, pend, count);
+        return (make_final_sequence(main)); 
+    }
     initialize_chains(pairs, main, pend);
     insert_pend_into_main(main, pend, count);
     auto new_pairs { make_pairs(main, new_pair_size, rest) };
-    return (initAndInsert(new_pairs, rest, count));
+    return (initAndInsert(new_pairs, new_pair_size, rest, count));
 }
 
 int main()
 {
 
-    vector<int> s {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7};
+    // vector<int> s {2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7};
+    vector<int> s { 10, 45, 2, 9};
     int count { };
 
     auto merged { merge_sequence(s, 2, count) };
-    auto result { initAndInsert(merged.pairs, merged.rest, count)};
-    cout << "number of comparisons are: " << count << endl;
+    //print(merged.new_sequence, merged.pairs, merged.rest);
+    //cout << "Merged part went through" << endl;
+    //cout << "pair size" << merged.pair_size << endl;
+   auto result { initAndInsert(merged.pairs, merged.pair_size, merged.rest, count)};
+   cout << "number of comparisons are: " << count << endl;
     cout << "Final result:";
-    for (auto i : result)
-        cout << i << " ";
-    cout << endl;
+    for (int i : result)
+       cout << i << " ";
+   cout << endl;
     
     return (0);
 }
