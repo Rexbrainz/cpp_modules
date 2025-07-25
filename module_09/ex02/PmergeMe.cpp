@@ -40,8 +40,10 @@ std::vector<int>    PmergeMe::validate(char **argv)
         {
             try
             {
-                long l_value { stol(value) };
-                if (l_value < 0 || l_value > std::numeric_limits<int>::max())
+                size_t  pos;
+                long l_value { stol(value, &pos) };
+                if (pos != value.length() || l_value < 0 ||
+                    l_value > std::numeric_limits<int>::max())
                     return {};
                 int n { static_cast<int>(l_value) };
                 sequence.push_back(n);
