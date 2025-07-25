@@ -10,7 +10,7 @@ SRC_DIR     = src
 OBJ_DIR     = obj
 INC_DIR     = include
 
-SRCS        = main.cpp PmergeMe.cpp
+SRCS        = main.cpp PmergeMe.cpp PmergeMeDeque.cpp
 OBJ        = $(SRCS:.cpp=.o)
 
 # Colors

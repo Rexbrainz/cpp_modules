@@ -29,7 +29,7 @@ struct MergedAndRest
     int                     pair_size;
 };
 
-bool    compare(int a, int b)
+bool    compare(int a, int b, int* numOfComparisons)
 {
     ++(*numOfComparisons);
     return (a > b);
@@ -329,8 +329,8 @@ vector<int>    initAndInsert(vector<LabeledPairs>& pairs, int pair_size, vector<
 int main()
 {
 
-    // vector<int> s {2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7};
-    vector<int> s { 10, 45, 2, 9};
+    vector<int> s {2, 17, 0, 16, 8, 6, 6, 10, 3, 21, 1, 12, 9, 14, 19, 12, 5, 4, 20, 13, 7};
+    // vector<int> s { 10, 45, 2, 2, 9};
     int count { };
 
     auto merged { merge_sequence(s, 2, count) };

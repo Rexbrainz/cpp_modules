@@ -1,163 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
+/*   PmergeMeDeque.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sudaniel <sudaniel@student.42heilbronn.de  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 12:30:34 by sudaniel          #+#    #+#             */
-/*   Updated: 2025/07/25 10:59:19 by sudaniel         ###   ########.fr       */
+/*   Created: 2025/07/25 06:20:51 by sudaniel          #+#    #+#             */
+/*   Updated: 2025/07/25 10:58:53 by sudaniel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe(char **argv)
+bool    PmergeMe::compare_deq(int a, int b)
 {
-    m_sequence = validate(argv);
-    if (m_sequence.empty())
-    {
-        std::cerr << "Error" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-}
-
-PmergeMe::~PmergeMe()
-{
-    m_sequence.clear();
-    m_vec_result.clear();
-    m_deq_result.clear();
-}
-
-std::vector<int>    PmergeMe::validate(char **argv)
-{
-    std::vector<int>    sequence;
-    while (*argv)
-    {
-        std::stringstream   ss(*argv);
-        std::string value;
-        while (ss >> value)
-        {
-            try
-            {
-                long l_value { stol(value) };
-                if (l_value < 0 || l_value > std::numeric_limits<int>::max())
-                    return {};
-                int n { static_cast<int>(l_value) };
-               // if (std::find(begin(sequence), end(sequence), n) != end(sequence))
-                 //   return {};
-                sequence.push_back(n);
-            }
-            catch (const std::exception&)
-            {
-                return {};
-            }
-        }
-        ++argv;
-    }
-    return (sequence);
-}
-
-bool    PmergeMe::compare_vec(int a, int b)
-{
-    ++m_number_of_comparisons_vec;
+    ++m_number_of_comparisons_deq;
     return (a > b);
 }
 
-std::vector<int>    PmergeMe::getSequenceToSort() const
+void    PmergeMe::sort_deq()
 {
-    return (m_sequence);
-}
-
-std::vector<int>    PmergeMe::getVectorResult() const
-{
-    return (m_vec_result);
-}
-
-std::deque<int>    PmergeMe::getDequeResult() const
-{
-    return (m_deq_result);
-}
-
-int    PmergeMe::getSize() const
-{
-    return (m_sequence.size());
-}
-
-int    PmergeMe::getNumOfComparisonsVec() const
-{
-    return (m_number_of_comparisons_vec);
-}
-
-int    PmergeMe::getNumOfComparisonsDeq() const
-{
-    return (m_number_of_comparisons_deq);
-}
-
-long long  PmergeMe::getTimeVec() const
-{
-    return (m_time_vec.count());
-}
-
-long long  PmergeMe::getTimeDeq() const
-{
-    return (m_time_deq.count());
-}
-
-std::ostream&    operator<<(std::ostream& os, const PmergeMe& rhs)
-{
-    std::vector<int>    vecToSort { rhs.getSequenceToSort() };
-    std::vector<int>    vecResult { rhs.getVectorResult() };
-    std::deque<int>     deqResult { rhs.getDequeResult() };
-
-    os << "Before: ";
-   for (const auto& i : vecToSort)
-        os << i << " ";
-    os << std::endl;
-    os << "After: ";
-   for (const auto& i : vecResult)
-        os << i << " ";
-    os << std::endl;
-    os << "Vec Number of comparisons: "
-        << rhs.getNumOfComparisonsVec() << std::endl;;
-    os << "Deq Number of comparisons: "
-        << rhs.getNumOfComparisonsDeq() << std::endl;;
-    os << "Time to process a range of " << rhs.getSize() <<
-        " elements with " << "std::vector : " << rhs.getTimeVec() 
-        << " us" << std::endl;
-    os << "Time to process a range of " << rhs.getSize() <<
-        " elements with " << "std::deque : " << rhs.getTimeDeq()
-        << " us";
-    return (os);
-}
-
-//PmergeMe Vector
-void    PmergeMe::sort_vec()
-{
+    std::deque<int>    d_sequence(begin(m_sequence), end(m_sequence));
     auto    start { std::chrono::steady_clock::now() };
-    auto merged { merge_sequence(m_sequence, PAIR_SIZE) };
-    m_vec_result = init_chains_and_insert(merged.pairs, 
+    auto merged { merge_sequence(d_sequence, PAIR_SIZE) };
+    m_deq_result = init_chains_and_insert(merged.pairs, 
                                   merged.pair_size, merged.left_over);
     auto    end { std::chrono::steady_clock::now() };
-    m_time_vec =
+    m_time_deq = 
         std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 }
 
-
-PmergeMe::VecMergedPairs   
-PmergeMe::merge_sequence(std::vector<int>& sequence, int pair_size)
+PmergeMe::DeqMergedPairs   
+PmergeMe::merge_sequence(std::deque<int> sequence, int pair_size)
 {
-    std::vector<int>        remaining_numbers;
-    std::vector<VecPair>    labeled_pairs;
+    std::deque<int>        remaining_numbers;
+    std::deque<DeqPair>    labeled_pairs;
     int                     index { };
     
     //Make pairs
     size_t i { };
     for (; i + pair_size <= sequence.size(); i += pair_size)
     {
-        VecElement element_b(sequence.begin() + i, sequence.begin() + i + pair_size / 2);
-        VecElement element_a(sequence.begin() + i + pair_size / 2, sequence.begin() + i + pair_size);
-        if (compare_vec(element_b.back(), element_a.back()))
+        DeqElement element_b(sequence.begin() + i, sequence.begin() + i + pair_size / 2);
+        DeqElement element_a(sequence.begin() + i + pair_size / 2, sequence.begin() + i + pair_size);
+        if (compare_deq(element_b.back(), element_a.back()))
             swap(element_b, element_a); 
         labeled_pairs.push_back({++index, element_b, element_a});
     }
@@ -166,7 +52,7 @@ PmergeMe::merge_sequence(std::vector<int>& sequence, int pair_size)
     size_t remaining { sequence.size() - i };
     if (remaining >= static_cast<size_t>(half_pair))
     {
-        VecElement element_b(sequence.begin() + i, sequence.begin() + i + half_pair);
+        DeqElement element_b(sequence.begin() + i, sequence.begin() + i + half_pair);
         labeled_pairs.push_back({++index, element_b, {}, true});
         i += half_pair;
     }
@@ -177,7 +63,7 @@ PmergeMe::merge_sequence(std::vector<int>& sequence, int pair_size)
     if (labeled_pairs.size() <= 1)
         return {labeled_pairs, remaining_numbers, pair_size};
     //New sequence for the next recursion.
-    std::vector<int> new_sequence;
+    std::deque<int> new_sequence;
     for (const auto& e : labeled_pairs)
     {
         new_sequence.insert(end(new_sequence), begin(e.element_b), end(e.element_b));
@@ -188,9 +74,9 @@ PmergeMe::merge_sequence(std::vector<int>& sequence, int pair_size)
     return merge_sequence(new_sequence, pair_size * 2);
 }
 
-void    PmergeMe::initialize_chains(const std::vector<VecPair>& l_p,
-                          std::vector<LabeledElement<std::vector<int>>>& main,
-                          std::vector<LabeledElement<std::vector<int>>>& pend)
+void    PmergeMe::initialize_chains(const std::deque<DeqPair>& l_p,
+                          std::deque<LabeledElement<std::deque<int>>>& main,
+                          std::deque<LabeledElement<std::deque<int>>>& pend)
 {
     auto b { begin(l_p) };
     auto e { end(l_p) };
@@ -207,9 +93,9 @@ void    PmergeMe::initialize_chains(const std::vector<VecPair>& l_p,
     }
 }
 
-std::vector<int> PmergeMe::generate_jacobsthal_numbers_vec(int n)
+std::deque<int> PmergeMe::generate_jacobsthal_numbers_deq(int n)
 {
-    std::vector<int> j_numbers {0, 1};
+    std::deque<int> j_numbers {0, 1};
 
     int j { 2 };
     while (true)
@@ -223,8 +109,8 @@ std::vector<int> PmergeMe::generate_jacobsthal_numbers_vec(int n)
     return { begin(j_numbers) + 2, end(j_numbers) };
 }
 
-void    PmergeMe::insertion(std::vector<LabeledElement<std::vector<int>>>& main,
-               const std::vector<LabeledElement<std::vector<int>>>::const_iterator it)
+void    PmergeMe::insertion(std::deque<LabeledElement<std::deque<int>>>& main,
+               const std::deque<LabeledElement<std::deque<int>>>::const_iterator it)
 {
     auto  insertion_area_end { end(main) };
 
@@ -243,7 +129,7 @@ void    PmergeMe::insertion(std::vector<LabeledElement<std::vector<int>>>& main,
     while (low < high)
     {
         auto mid { low + (high - low) / 2 };
-        if (compare_vec(mid->element.back(), (*it).element.back()))
+        if (compare_deq(mid->element.back(), (*it).element.back()))
             high = mid;
         else
             low = mid + 1;
@@ -252,16 +138,16 @@ void    PmergeMe::insertion(std::vector<LabeledElement<std::vector<int>>>& main,
 }
 
 void    
-PmergeMe::insert_pend_into_main(std::vector<LabeledElement<std::vector<int>>>& main,
-                                    std::vector<LabeledElement<std::vector<int>>>& pend)
+PmergeMe::insert_pend_into_main(std::deque<LabeledElement<std::deque<int>>>& main,
+                                    std::deque<LabeledElement<std::deque<int>>>& pend)
 {
     if (pend.empty())
         return ;
 
-    std::vector<int> j_numbers { generate_jacobsthal_numbers_vec(pend.size()) };
+    std::deque<int> j_numbers { generate_jacobsthal_numbers_deq(pend.size()) };
     if (j_numbers.empty())
         return ;
-    std::vector<bool> inserted(pend.size(), false);
+    std::deque<bool> inserted(pend.size(), false);
     for (size_t i { 1 }; i < j_numbers.size(); ++i)
     {
 
@@ -286,23 +172,23 @@ PmergeMe::insert_pend_into_main(std::vector<LabeledElement<std::vector<int>>>& m
     pend.clear();
 }
 
-std::vector<int> 
-PmergeMe::make_final_sequence(std::vector<LabeledElement<std::vector<int>>>& main)
+std::deque<int> 
+PmergeMe::make_final_sequence(std::deque<LabeledElement<std::deque<int>>>& main)
 {
 
-    std::vector<int> sequence;
+    std::deque<int> sequence;
 
     for (auto& e : main)
         sequence.insert(end(sequence), begin(e.element), end(e.element));
     return (sequence);
 }
 
-std::vector<PmergeMe::VecPair>
-PmergeMe::make_pairs(std::vector<LabeledElement<std::vector<int>>> &main,
-                                   int pair_size, std::vector<int> &rest)
+std::deque<PmergeMe::DeqPair>
+PmergeMe::make_pairs(std::deque<LabeledElement<std::deque<int>>> &main,
+                                   int pair_size, std::deque<int> &rest)
 {
-    std::vector<int>        new_sequence;
-    std::vector<VecPair>    pairs;
+    std::deque<int>        new_sequence;
+    std::deque<DeqPair>    pairs;
     int                     index { };
     int                     element_size { pair_size / 2 };
 
@@ -317,17 +203,17 @@ PmergeMe::make_pairs(std::vector<LabeledElement<std::vector<int>>> &main,
     for (; b + pair_size <= e;)
     {
         auto mid { b + element_size };
-        VecElement  elementB { b, mid };
-        VecElement  elementA { mid, mid + element_size };
-        VecPair    aPair { ++index, elementB, elementA };
+        DeqElement  elementB { b, mid };
+        DeqElement  elementA { mid, mid + element_size };
+        DeqPair    aPair { ++index, elementB, elementA };
         pairs.push_back(aPair);
         b += pair_size;
     }
     //If enough for an element, form a partial pair
     if (distance(b, e) >= element_size)
     {
-        VecElement  elementB { b, b + element_size };
-        VecPair    partial_pair { ++index, elementB, {}, true };
+        DeqElement  elementB { b, b + element_size };
+        DeqPair    partial_pair { ++index, elementB, {}, true };
         pairs.push_back(partial_pair);
         b += element_size;
     }
@@ -337,11 +223,12 @@ PmergeMe::make_pairs(std::vector<LabeledElement<std::vector<int>>> &main,
     return (pairs);
 }
 
-std::vector<int>    PmergeMe::init_chains_and_insert(std::vector<VecPair>& pairs,
-                            int pair_size, std::vector<int>& rest)
+std::deque<int>    
+PmergeMe::init_chains_and_insert(std::deque<DeqPair>& pairs,
+                            int pair_size, std::deque<int>& rest)
 {
-    std::vector<LabeledElement<std::vector<int>>>  main;
-    std::vector<LabeledElement<std::vector<int>>>  pend;
+    std::deque<LabeledElement<std::deque<int>>>  main;
+    std::deque<LabeledElement<std::deque<int>>>  pend;
     int                                            new_pair_size;
 
     if (pair_size == 2)
@@ -356,4 +243,5 @@ std::vector<int>    PmergeMe::init_chains_and_insert(std::vector<VecPair>& pairs
     auto new_pairs { make_pairs(main, new_pair_size, rest) };
     return (init_chains_and_insert(new_pairs, new_pair_size, rest));
 }
+
 
