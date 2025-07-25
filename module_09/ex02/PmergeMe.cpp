@@ -44,8 +44,6 @@ std::vector<int>    PmergeMe::validate(char **argv)
                 if (l_value < 0 || l_value > std::numeric_limits<int>::max())
                     return {};
                 int n { static_cast<int>(l_value) };
-               // if (std::find(begin(sequence), end(sequence), n) != end(sequence))
-                 //   return {};
                 sequence.push_back(n);
             }
             catch (const std::exception&)
@@ -119,9 +117,9 @@ std::ostream&    operator<<(std::ostream& os, const PmergeMe& rhs)
         os << i << " ";
     os << std::endl;
     os << "Vec Number of comparisons: "
-        << rhs.getNumOfComparisonsVec() << std::endl;;
+        << rhs.getNumOfComparisonsVec() << std::endl;
     os << "Deq Number of comparisons: "
-        << rhs.getNumOfComparisonsDeq() << std::endl;;
+        << rhs.getNumOfComparisonsDeq() << std::endl;
     os << "Time to process a range of " << rhs.getSize() <<
         " elements with " << "std::vector : " << rhs.getTimeVec() 
         << " us" << std::endl;
