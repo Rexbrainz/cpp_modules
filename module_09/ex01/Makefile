@@ -6,10 +6,6 @@ NAME        = RPN
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++17
 
-SRC_DIR     = src
-OBJ_DIR     = obj
-INC_DIR     = include
-
 SRCS        = main.cpp RPN.cpp
 OBJ        = $(SRCS:.cpp=.o)
 

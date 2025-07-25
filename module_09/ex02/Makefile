@@ -6,10 +6,6 @@ NAME        = PmergeMe
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -g -std=c++17
 
-SRC_DIR     = src
-OBJ_DIR     = obj
-INC_DIR     = include
-
 SRCS        = main.cpp PmergeMe.cpp PmergeMeDeque.cpp
 OBJ        = $(SRCS:.cpp=.o)
 
